@@ -1,4 +1,4 @@
-package com.example.todoapp.infraatructure.entity;
+package com.example.todoapp.infrastructure.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,8 +8,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,15 +18,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@IdClass(TodoHistoryId.class)
-@Table(name = "todo_history")
-public class TodoHistoryEntity {
+@Table(name = "todos")
+public class TodoEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "internal_id")
     private Integer internalId;
 
-    @Id
     @Column(name = "version_number")
     private Integer versionNumber;
 

@@ -1,4 +1,4 @@
-package com.example.todoapp.domain.model.value;
+package com.example.todoapp.domain.model.todo.value;
 
 import jakarta.persistence.Embeddable;
 

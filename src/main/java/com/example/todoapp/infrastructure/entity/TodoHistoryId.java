@@ -1,4 +1,4 @@
-package com.example.todoapp.infraatructure.entity;
+package com.example.todoapp.infrastructure.entity;
 
 import java.io.Serializable;
 
