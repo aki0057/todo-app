@@ -5,7 +5,7 @@
 このアプリケーションは、DDD（ドメイン駆動設計）のレイヤードアーキテクチャを採用した Todo 管理アプリです。  
 Todo の更新履歴を保持するため、`todo` と `todo_history` の 2 つのテーブルを持ち、生成および更新のたびに履歴が自動生成されます。
 
-学習目的として DDD の実践的な構造を体験することを目的としています。
+学習のため、DDD の実践的な構造を体験することを目的としています。
 
 ## 2. 技術スタック
 
@@ -18,11 +18,13 @@ Todo の更新履歴を保持するため、`todo` と `todo_history` の 2 つ�
 
 ## 3. ディレクトリ構造（DDD 準拠）
 
+```
 src/main/java/com/example/todoapp/
-├── application/ # ユースケース層
-├── domain/ # ドメイン層（Entity, ValueObject, Repository Interface）
-├── infrastructure/ # 永続化層（JPA Entity, Repository実装）
-└── presentation/ # Web層（Controller）
+├── application/ # ユースケース層（Service）
+├── domain/ # ドメイン層（Todo，ValueObject）
+├── infrastructure/ # 永続化層（Entity，Mapper，RepositoryImpl）
+└── presentation/ # Web層（Controller，Form）
+```
 
 ## 4. テーブル構造
 
@@ -65,4 +67,6 @@ src/main/java/com/example/todoapp/
 
 ## 6. 起動方法
 
+```
 ./mvnw spring-boot:run
+```
