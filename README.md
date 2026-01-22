@@ -9,7 +9,7 @@ Todo の更新履歴を保持するため、`todo` と `todo_history` の 2 つ�
 
 ## 2. 技術スタック
 
-- Java 21
+- Java 23
 - Spring Boot 3.5.9
 - Spring Data JPA
 - PostgreSQL
