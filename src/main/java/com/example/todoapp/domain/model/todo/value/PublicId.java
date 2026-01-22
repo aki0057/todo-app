@@ -16,4 +16,8 @@ public record PublicId(String value) {
             throw new IllegalArgumentException("PublicIdはUUID形式である必要があります");
         }
     }
+
+    public static PublicId generate() {
+        return new PublicId(UUID.randomUUID().toString());
+    }
 }
