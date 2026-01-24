@@ -131,4 +131,69 @@ public class Todo {
         );
     }
 
+    // ------------------------------------------------------------
+    // 振る舞い
+    // ------------------------------------------------------------
+
+    /**
+     * Todo の内容を更新する。
+     * <p>
+     * タイトルと期限日は必須。期限日は本日以降である必要がある。
+     * 更新時に版数と更新日時を更新する。
+     * </p>
+     *
+     * @param title   新しいタイトル（必須）
+     * @param detail  新しい詳細（任意）
+     * @param dueDate 新しい期限日（必須）
+     * @throws IllegalArgumentException タイトルが不正な場合
+     */
+    public void update(String title, String detail, LocalDate dueDate) {
+
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("タイトルは必須です");
+        }
+
+        this.title = title;
+        this.detail = detail;
+        this.dueDate = new DueDate(dueDate);
+
+        this.versionNumber = this.versionNumber.next();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    /**
+     * Todo を完了状態にする。
+     * <p>
+     * すでに完了済みの場合は何も変更しない。
+     * 完了状態へ遷移した場合のみ、版数と更新日時を更新する。
+     * </p>
+     */
+    public void complete() {
+
+        if (this.completed) {
+            return;
+        }
+
+        this.completed = true;
+        this.versionNumber = this.versionNumber.next();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    /**
+     * Todo を削除状態にする（論理削除）。
+     * <p>
+     * すでに削除済みの場合は何も変更しない。
+     * 削除状態へ遷移した場合のみ、版数と更新日時を更新する。
+     * </p>
+     */
+    public void delete() {
+
+        if (this.deleted) {
+            return;
+        }
+
+        this.deleted = true;
+        this.versionNumber = this.versionNumber.next();
+        this.updatedAt = LocalDateTime.now();
+    }
 }
