@@ -3,14 +3,19 @@ package com.example.todoapp.domain.model.todo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
 
-public class TodoTest {
+import com.example.todoapp.domain.model.todo.value.DueDate;
+import com.example.todoapp.domain.model.todo.value.InternalId;
+import com.example.todoapp.domain.model.todo.value.PublicId;
+
+class TodoTest {
+
+    // ----------------------------------------------------------------------
+    // create
+    // ----------------------------------------------------------------------
 
     @Test
     void create_新規Todoが正しい初期状態で生成される() {
@@ -23,74 +28,60 @@ public class TodoTest {
         LocalDateTime after = LocalDateTime.now();
 
         // assert
-        // internalId は null
-        assertNull(todo.getInternalId());
+        assertThat(todo.getInternalId()).isNull();
+        assertThat(todo.getPublicId()).isNotNull();
+        assertThat(todo.getVersionNumber().value()).isEqualTo(1);
+        assertThat(todo.isCompleted()).isFalse();
+        assertThat(todo.isDeleted()).isFalse();
 
-        // publicId が生成される
-        assertNotNull(todo.getPublicId());
+        assertThat(todo.getCreatedAt()).isBetween(before, after);
+        assertThat(todo.getUpdatedAt()).isEqualTo(todo.getCreatedAt());
 
-        // versionNumber = 1
-        assertEquals(1, todo.getVersionNumber().value());
-
-        // completed = false
-        assertFalse(todo.isCompleted());
-
-        // deleted = false
-        assertFalse(todo.isDeleted());
-
-        // createdAt が「before ～ after」の範囲にある
-        assertFalse(todo.getCreatedAt().isBefore(before));
-        assertFalse(todo.getCreatedAt().isAfter(after));
-
-        // updatedAt = createdAt
-        assertEquals(todo.getCreatedAt(), todo.getUpdatedAt());
-
-        // dueDate が設定される
-        assertEquals(dueDate, todo.getDueDate().value());
-
-        // title が設定される
-        assertEquals("タイトル", todo.getTitle());
-
-        // detail が設定される
-        assertEquals("詳細", todo.getDetail());
+        assertThat(todo.getDueDate().value()).isEqualTo(dueDate);
+        assertThat(todo.getTitle()).isEqualTo("タイトル");
+        assertThat(todo.getDetail()).isEqualTo("詳細");
     }
 
     @Test
     void create_タイトルがnullの場合は例外を投げる() {
+        // arrange
         LocalDate dueDate = LocalDate.now().plusDays(1);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            Todo.create(null, "詳細", dueDate);
-        });
+        // act & assert
+        assertThatThrownBy(() -> Todo.create(null, "詳細", dueDate))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void create_タイトルが空文字の場合は例外を投げる() {
+        // arrange
         LocalDate dueDate = LocalDate.now().plusDays(1);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            Todo.create("", "詳細", dueDate);
-        });
+        // act & assert
+        assertThatThrownBy(() -> Todo.create("", "詳細", dueDate))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void create_タイトルが空白のみの場合は例外を投げる() {
+        // arrange
         LocalDate dueDate = LocalDate.now().plusDays(1);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            Todo.create("   ", "詳細", dueDate);
-        });
+        // act & assert
+        assertThatThrownBy(() -> Todo.create("   ", "詳細", dueDate))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void create_期限日がnullの場合は例外を投げる() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Todo.create("タイトル", "詳細", null);
-        });
+        // act & assert
+        assertThatThrownBy(() -> Todo.create("タイトル", "詳細", null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void create_期限日が過去日の場合は例外を投げる() {
+        // arrange
         LocalDate pastDate = LocalDate.now().minusDays(1);
 
         // act & assert
