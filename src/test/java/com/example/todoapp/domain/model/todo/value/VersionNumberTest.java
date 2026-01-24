@@ -8,34 +8,46 @@ class VersionNumberTest {
 
     @Test
     void 正の整数で生成できる() {
-        VersionNumber v = new VersionNumber(1);
-        assertThat(v.value()).isEqualTo(1);
+        // arrange
+        int value = 1;
+
+        // act
+        VersionNumber v = new VersionNumber(value);
+
+        // assert
+        assertThat(v.value()).isEqualTo(value);
     }
 
     @Test
     void ゼロでは生成できない() {
+        // act & assert
         assertThatThrownBy(() -> new VersionNumber(0))
-            .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void 負の値では生成できない() {
+        // act & assert
         assertThatThrownBy(() -> new VersionNumber(-1))
-            .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
-    
+
     @Test
     void nullでは生成できない() {
+        // act & assert
         assertThatThrownBy(() -> new VersionNumber(null))
-            .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void nextメソッドで次の版数が取得できる() {
+        // arrange
         VersionNumber v1 = new VersionNumber(1);
+
+        // act
         VersionNumber v2 = v1.next();
 
+        // assert
         assertThat(v2.value()).isEqualTo(2);
     }
-    
 }

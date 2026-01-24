@@ -8,21 +8,27 @@ class InternalIdTest {
 
     @Test
     void 正の整数で生成できる() {
-        InternalId id = new InternalId(1);
+        // arrange
+        int value = 1;
 
-        assertThat(id.value()).isEqualTo(1);
+        // act
+        InternalId id = new InternalId(value);
+
+        // assert
+        assertThat(id.value()).isEqualTo(value);
     }
 
     @Test
     void ゼロでは生成できない() {
+        // act & assert
         assertThatThrownBy(() -> new InternalId(0))
-            .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void 負の値では生成できない() {
+        // act & assert
         assertThatThrownBy(() -> new InternalId(-1))
-            .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
-    
 }
