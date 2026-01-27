@@ -288,6 +288,38 @@ class TodoServiceTest {
             verify(todoRepository, times(1)).findByPublicId(any(PublicId.class));
             verify(todoRepository, never()).save(any(Todo.class));
         }
+
+        @Test
+        @DisplayName("重複完了: すでに完了状態のTodoを完了するとスキップされる")
+        void completeTodo_重複完了() {
+            // arrange
+            String publicId = VALID_UUID_1;
+            Todo completedTodo = new Todo(
+                new InternalId(1),
+                new PublicId(publicId),
+                new VersionNumber(2),
+                "Sample Title",
+                "Sample Detail",
+                true,
+                false,
+                new DueDate(LocalDate.now().plusDays(1)),
+                LocalDateTime.now(),
+                LocalDateTime.now()
+            );
+
+            when(todoRepository.findByPublicId(any(PublicId.class)))
+                .thenReturn(Optional.of(completedTodo));
+
+            // act
+            Todo result = todoService.completeTodo(publicId);
+
+            // assert
+            assertThat(result).isNotNull();
+            assertThat(result.isCompleted()).isTrue();
+            verify(todoRepository, times(1)).findByPublicId(any(PublicId.class));
+            verify(todoRepository, never()).save(any(Todo.class));
+            verify(historyRepository, never()).save(any(TodoHistoryEntity.class));
+        }
     }
 
     // ================================================================
@@ -386,6 +418,25 @@ class TodoServiceTest {
             String publicId = NON_EXISTENT_UUID;
             when(todoRepository.findByPublicId(any(PublicId.class)))
                     .thenReturn(Optional.empty());
+
+            // act & assert
+            assertThatThrownBy(() -> todoService.getTodo(publicId))
+                    .isInstanceOf(TodoNotFoundException.class)
+                    .hasMessageContaining("Todo not found");
+
+            verify(todoRepository, times(1)).findByPublicId(any(PublicId.class));
+        }
+
+        @Test
+        @DisplayName("異常系: 削除済みTodoを取得しようとすると例外")
+        void getTodo_削除済みTodo() {
+            // arrange
+            String publicId = VALID_UUID_1;
+            Todo deletedTodo = createSampleTodo(1, publicId, 1);
+            deletedTodo.delete();
+            
+            when(todoRepository.findByPublicId(any(PublicId.class)))
+                    .thenReturn(Optional.of(deletedTodo));
 
             // act & assert
             assertThatThrownBy(() -> todoService.getTodo(publicId))
