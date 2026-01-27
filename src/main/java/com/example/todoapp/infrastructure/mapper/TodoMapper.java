@@ -26,7 +26,8 @@ public class TodoMapper {
 
     public static TodoEntity toEntity(Todo domain) {
         TodoEntity entity = new TodoEntity();
-        entity.setInternalId(domain.getInternalId().value());
+        // internalId は新規作成時は null のため、null セーフに設定する
+        entity.setInternalId(domain.getInternalId() != null ? domain.getInternalId().value() : null);
         entity.setPublicId(domain.getPublicId().value());
         entity.setVersionNumber(domain.getVersionNumber().value());
         entity.setTitle(domain.getTitle());
