@@ -1,6 +1,7 @@
 package com.example.todoapp.application;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,6 +66,11 @@ public class TodoService {
 		Todo todo = todoRepository.findByPublicId(new PublicId(publicId))
 				.orElseThrow(() -> new TodoNotFoundException("Todo not found: " + publicId));
 
+		// すでに完了状態の場合はスキップ
+		if (todo.isCompleted()) {
+			return todo;
+		}
+
 		int beforeVersion = todo.getVersionNumber().value();
 		todo.complete();
 		Todo saved = todoRepository.save(todo);
@@ -98,8 +104,15 @@ public class TodoService {
 	// ---------------------------------------------------------------------
 	@Transactional(readOnly = true)
 	public Todo getTodo(String publicId) {
-		return todoRepository.findByPublicId(new PublicId(publicId))
+		Todo todo = todoRepository.findByPublicId(new PublicId(publicId))
 				.orElseThrow(() -> new TodoNotFoundException("Todo not found: " + publicId));
+		
+		// 削除済みTodoは存在しないものとして扱う
+		if (todo.isDeleted()) {
+			throw new TodoNotFoundException("Todo not found: " + publicId);
+		}
+		
+		return todo;
 	}
 
 	@Transactional(readOnly = true)
@@ -107,6 +120,9 @@ public class TodoService {
 		return todoRepository.findAll()
 				.stream()
 				.filter(t -> !t.isDeleted())
+				.sorted(Comparator
+						.comparing((Todo todo) -> todo.getDueDate().value())
+						.thenComparing(Todo::getCreatedAt))
 				.collect(Collectors.toList());
 	}
 

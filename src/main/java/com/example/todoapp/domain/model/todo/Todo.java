@@ -101,18 +101,25 @@ public class Todo {
      * Todo を新規作成する。
      * <p>
      * タイトルと期限日は必須。期限日は本日以降である必要がある。
+     * タイトルは100文字以内、詳細は1000文字以内である必要がある。
      * </p>
      *
-     * @param title   タイトル（必須）
-     * @param detail  詳細（任意）
-     * @param dueDate 期限日（必須）
+     * @param title   タイトル（必須、100文字以内）
+     * @param detail  詳細（任意、1000文字以内）
+     * @param dueDate 期限日（必須、本日以降）
      * @return 新しく生成された Todo
-     * @throws IllegalArgumentException タイトルが不正な場合
+     * @throws IllegalArgumentException タイトルまたは詳細が不正な場合
      */
     public static Todo create(String title, String detail, LocalDate dueDate) {
 
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("タイトルは必須です");
+        }
+        if (title.length() > 100) {
+            throw new IllegalArgumentException("タイトルは100文字以内である必要があります");
+        }
+        if (detail != null && detail.length() > 1000) {
+            throw new IllegalArgumentException("詳細は1000文字以内である必要があります");
         }
 
         LocalDateTime now = LocalDateTime.now();
@@ -139,18 +146,25 @@ public class Todo {
      * Todo の内容を更新する。
      * <p>
      * タイトルと期限日は必須。期限日は本日以降である必要がある。
+     * タイトルは100文字以内、詳細は1000文字以内である必要がある。
      * 更新時に版数と更新日時を更新する。
      * </p>
      *
-     * @param title   新しいタイトル（必須）
-     * @param detail  新しい詳細（任意）
-     * @param dueDate 新しい期限日（必須）
-     * @throws IllegalArgumentException タイトルが不正な場合
+     * @param title   新しいタイトル（必須、100文字以内）
+     * @param detail  新しい詳細（任意、1000文字以内）
+     * @param dueDate 新しい期限日（必須、本日以降）
+     * @throws IllegalArgumentException タイトルまたは詳細が不正な場合
      */
     public void update(String title, String detail, LocalDate dueDate) {
 
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("タイトルは必須です");
+        }
+        if (title.length() > 100) {
+            throw new IllegalArgumentException("タイトルは100文字以内である必要があります");
+        }
+        if (detail != null && detail.length() > 1000) {
+            throw new IllegalArgumentException("詳細は1000文字以内である必要があります");
         }
 
         this.title = title;
