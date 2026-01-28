@@ -1,7 +1,6 @@
 package com.example.todoapp.infrastructure.entity;
 
 import java.io.Serializable;
-
 import lombok.Data;
 
 @Data

@@ -4,9 +4,8 @@ import jakarta.persistence.Embeddable;
 
 /**
  * Todo の内部IDを表す ValueObject。
- * <p>
- * データベースが採番する自動採番 ID。1以上の正の整数のみ有効。
- * </p>
+ *
+ * <p>データベースが採番する自動採番 ID。1以上の正の整数のみ有効。
  */
 @Embeddable
 public record InternalId(Integer value) {
@@ -16,4 +15,3 @@ public record InternalId(Integer value) {
         }
     }
 }
-

@@ -1,14 +1,12 @@
 package com.example.todoapp.domain.model.todo.value;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Embeddable;
+import java.time.LocalDate;
 
 /**
  * Todo の期限日を表す ValueObject。
- * <p>
- * 本日以降の日付のみ有効。過去日付は許可されない。
- * </p>
+ *
+ * <p>本日以降の日付のみ有効。過去日付は許可されない。
  */
 @Embeddable
 public record DueDate(LocalDate value) {
@@ -22,4 +20,3 @@ public record DueDate(LocalDate value) {
         }
     }
 }
-

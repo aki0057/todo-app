@@ -4,10 +4,8 @@ import jakarta.persistence.Embeddable;
 
 /**
  * Todo の版数を表す ValueObject。
- * <p>
- * 更新の度に インクリメントされ、楽観的ロックの制御に使用される。
- * 最小値は 1。
- * </p>
+ *
+ * <p>更新の度に インクリメントされ、楽観的ロックの制御に使用される。 最小値は 1。
  */
 @Embeddable
 public record VersionNumber(Integer value) {
@@ -22,9 +20,8 @@ public record VersionNumber(Integer value) {
 
     /**
      * 初期版数を生成する。
-     * <p>
-     * 新規 Todo 作成時に使用される。初期値は 1。
-     * </p>
+     *
+     * <p>新規 Todo 作成時に使用される。初期値は 1。
      *
      * @return 初期版数（1）
      */
@@ -34,9 +31,8 @@ public record VersionNumber(Integer value) {
 
     /**
      * 次の版数を取得する。
-     * <p>
-     * 現在の版数に 1 を加えた新しい版数を返す。
-     * </p>
+     *
+     * <p>現在の版数に 1 を加えた新しい版数を返す。
      *
      * @return インクリメント後の新しい版数
      */

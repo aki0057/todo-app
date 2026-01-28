@@ -1,17 +1,16 @@
 package com.example.todoapp.domain.model.todo;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 
 import com.example.todoapp.domain.model.todo.value.DueDate;
 import com.example.todoapp.domain.model.todo.value.InternalId;
 import com.example.todoapp.domain.model.todo.value.PublicId;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 @DisplayName("Todo のテスト")
 class TodoTest {
@@ -26,28 +25,28 @@ class TodoTest {
         @Test
         @DisplayName("正常系: 新規Todoが正しい初期状態で生成される")
         void create_新規Todoが正しい初期状態で生成される() {
-        // arrange
-        LocalDateTime before = LocalDateTime.now();
-        LocalDate dueDate = LocalDate.of(2099, 1, 1);
+            // arrange
+            LocalDateTime before = LocalDateTime.now();
+            LocalDate dueDate = LocalDate.of(2099, 1, 1);
 
-        // act
-        Todo todo = Todo.create("タイトル", "詳細", dueDate);
-        LocalDateTime after = LocalDateTime.now();
+            // act
+            Todo todo = Todo.create("タイトル", "詳細", dueDate);
+            LocalDateTime after = LocalDateTime.now();
 
-        // assert
-        assertThat(todo.getInternalId()).isNull();
-        assertThat(todo.getPublicId()).isNotNull();
-        assertThat(todo.getVersionNumber().value()).isEqualTo(1);
-        assertThat(todo.isCompleted()).isFalse();
-        assertThat(todo.isDeleted()).isFalse();
+            // assert
+            assertThat(todo.getInternalId()).isNull();
+            assertThat(todo.getPublicId()).isNotNull();
+            assertThat(todo.getVersionNumber().value()).isEqualTo(1);
+            assertThat(todo.isCompleted()).isFalse();
+            assertThat(todo.isDeleted()).isFalse();
 
-        assertThat(todo.getCreatedAt()).isBetween(before, after);
-        assertThat(todo.getUpdatedAt()).isEqualTo(todo.getCreatedAt());
+            assertThat(todo.getCreatedAt()).isBetween(before, after);
+            assertThat(todo.getUpdatedAt()).isEqualTo(todo.getCreatedAt());
 
-        assertThat(todo.getDueDate().value()).isEqualTo(dueDate);
-        assertThat(todo.getTitle()).isEqualTo("タイトル");
-        assertThat(todo.getDetail()).isEqualTo("詳細");
-    }
+            assertThat(todo.getDueDate().value()).isEqualTo(dueDate);
+            assertThat(todo.getTitle()).isEqualTo("タイトル");
+            assertThat(todo.getDetail()).isEqualTo("詳細");
+        }
 
         @Test
         @DisplayName("異常系: タイトルがnullの場合は例外を投げる")
@@ -182,7 +181,12 @@ class TodoTest {
             Todo todo = Todo.create("old title", "old detail", LocalDate.now().plusDays(1));
 
             // act & assert
-            assertThatThrownBy(() -> todo.update("new title", "new detail", LocalDate.now().minusDays(1)))
+            assertThatThrownBy(
+                            () ->
+                                    todo.update(
+                                            "new title",
+                                            "new detail",
+                                            LocalDate.now().minusDays(1)))
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }

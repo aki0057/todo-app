@@ -1,26 +1,22 @@
 package com.example.todoapp.infrastructure.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * Todo の永続化エンティティ。
- * <p>
- * データベース の todos テーブルにマップされ、
- * JPA を通じて永続化される。
- * </p>
+ *
+ * <p>データベース の todos テーブルにマップされ、 JPA を通じて永続化される。
  */
 @Getter
 @Setter

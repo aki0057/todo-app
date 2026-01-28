@@ -1,10 +1,5 @@
 package com.example.todoapp.infrastructure.repository.impl;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Repository;
-
 import com.example.todoapp.domain.model.todo.Todo;
 import com.example.todoapp.domain.model.todo.value.InternalId;
 import com.example.todoapp.domain.model.todo.value.PublicId;
@@ -12,14 +7,15 @@ import com.example.todoapp.domain.repository.TodoDomainRepository;
 import com.example.todoapp.infrastructure.entity.TodoEntity;
 import com.example.todoapp.infrastructure.mapper.TodoMapper;
 import com.example.todoapp.infrastructure.repository.jpa.TodoJpaRepository;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
 /**
  * ドメイン repository インターフェースの実装クラス。
- * <p>
- * Spring Data JPA の TodoJpaRepository をアダプターとして使用し、
- * ドメイン層に対して repository パターンを提供する。
- * Entity と Domain の変換は TodoMapper で行う。
- * </p>
+ *
+ * <p>Spring Data JPA の TodoJpaRepository をアダプターとして使用し、 ドメイン層に対して repository パターンを提供する。 Entity と
+ * Domain の変換は TodoMapper で行う。
  */
 @Repository
 public class TodoRepositoryImpl implements TodoDomainRepository {
@@ -43,8 +39,7 @@ public class TodoRepositoryImpl implements TodoDomainRepository {
      */
     @Override
     public Optional<Todo> findByInternalId(InternalId id) {
-        return jpa.findByInternalId(id.value())
-                  .map(TodoMapper::toDomain);
+        return jpa.findByInternalId(id.value()).map(TodoMapper::toDomain);
     }
 
     /**
@@ -55,8 +50,7 @@ public class TodoRepositoryImpl implements TodoDomainRepository {
      */
     @Override
     public Optional<Todo> findByPublicId(PublicId id) {
-        return jpa.findByPublicId(id.value())
-                  .map(TodoMapper::toDomain);
+        return jpa.findByPublicId(id.value()).map(TodoMapper::toDomain);
     }
 
     /**
@@ -66,17 +60,13 @@ public class TodoRepositoryImpl implements TodoDomainRepository {
      */
     @Override
     public List<Todo> findAll() {
-        return jpa.findAll()
-                  .stream()
-                  .map(TodoMapper::toDomain)
-                  .toList();
+        return jpa.findAll().stream().map(TodoMapper::toDomain).toList();
     }
 
     /**
      * Todo を永続化する。
-     * <p>
-     * 新規作成の場合は INSERT、既存の場合は UPDATE が実行される。
-     * </p>
+     *
+     * <p>新規作成の場合は INSERT、既存の場合は UPDATE が実行される。
      *
      * @param todo 永続化対象の Todo
      * @return 永続化後の Todo（内部IDが設定済み）

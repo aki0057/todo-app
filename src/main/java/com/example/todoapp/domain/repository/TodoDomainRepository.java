@@ -1,19 +1,16 @@
 package com.example.todoapp.domain.repository;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.example.todoapp.domain.model.todo.Todo;
 import com.example.todoapp.domain.model.todo.value.InternalId;
 import com.example.todoapp.domain.model.todo.value.PublicId;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Todo の永続化を行うドメイン repository インターフェース。
- * <p>
- * ドメイン層が依存する repository の仕様を定義し、
- * 具体的な永続化実装（JPA など）はインフラストラクチャ層に任せる。
- * DDD のリポジトリパターンに従い、ドメインモデルの集約を管理する。
- * </p>
+ *
+ * <p>ドメイン層が依存する repository の仕様を定義し、 具体的な永続化実装（JPA など）はインフラストラクチャ層に任せる。 DDD
+ * のリポジトリパターンに従い、ドメインモデルの集約を管理する。
  */
 public interface TodoDomainRepository {
 
@@ -48,4 +45,3 @@ public interface TodoDomainRepository {
      */
     Todo save(Todo todo);
 }
-

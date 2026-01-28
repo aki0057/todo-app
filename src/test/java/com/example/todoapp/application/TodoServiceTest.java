@@ -1,25 +1,12 @@
 package com.example.todoapp.application;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.todoapp.domain.exception.TodoNotFoundException;
 import com.example.todoapp.domain.model.todo.Todo;
@@ -30,34 +17,42 @@ import com.example.todoapp.domain.model.todo.value.VersionNumber;
 import com.example.todoapp.domain.repository.TodoDomainRepository;
 import com.example.todoapp.infrastructure.entity.TodoHistoryEntity;
 import com.example.todoapp.infrastructure.repository.jpa.TodoHistoryJpaRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("TodoService のテスト")
 class TodoServiceTest {
 
-    @Mock
-    private TodoDomainRepository todoRepository;
+    @Mock private TodoDomainRepository todoRepository;
 
-    @Mock
-    private TodoHistoryJpaRepository historyRepository;
+    @Mock private TodoHistoryJpaRepository historyRepository;
 
-    @InjectMocks
-    private TodoService todoService;
+    @InjectMocks private TodoService todoService;
 
     // テストデータ準備用のヘルパー
     private Todo createSampleTodo(Integer internalId, String publicId, int versionNumber) {
         return new Todo(
-            internalId != null ? new InternalId(internalId) : null,
-            new PublicId(publicId),
-            new VersionNumber(versionNumber),
-            "Sample Title",
-            "Sample Detail",
-            false,
-            false,
-            new DueDate(LocalDate.now().plusDays(1)),
-            LocalDateTime.now(),
-            LocalDateTime.now()
-        );
+                internalId != null ? new InternalId(internalId) : null,
+                new PublicId(publicId),
+                new VersionNumber(versionNumber),
+                "Sample Title",
+                "Sample Detail",
+                false,
+                false,
+                new DueDate(LocalDate.now().plusDays(1)),
+                LocalDateTime.now(),
+                LocalDateTime.now());
     }
 
     // 正しいUUID形式の定数
@@ -81,18 +76,18 @@ class TodoServiceTest {
             String expectedDetail = "Test Detail";
             LocalDate expectedDueDate = LocalDate.now().plusDays(1);
 
-            Todo savedTodo = new Todo(
-                new InternalId(1),
-                new PublicId(VALID_UUID_1),
-                new VersionNumber(1),
-                expectedTitle,
-                expectedDetail,
-                false,
-                false,
-                new DueDate(expectedDueDate),
-                LocalDateTime.now(),
-                LocalDateTime.now()
-            );
+            Todo savedTodo =
+                    new Todo(
+                            new InternalId(1),
+                            new PublicId(VALID_UUID_1),
+                            new VersionNumber(1),
+                            expectedTitle,
+                            expectedDetail,
+                            false,
+                            false,
+                            new DueDate(expectedDueDate),
+                            LocalDateTime.now(),
+                            LocalDateTime.now());
 
             ArgumentCaptor<Todo> todoCaptor = ArgumentCaptor.forClass(Todo.class);
 
@@ -106,7 +101,7 @@ class TodoServiceTest {
             assertThat(result.getTitle()).isEqualTo(expectedTitle);
             assertThat(result.getDetail()).isEqualTo(expectedDetail);
             assertThat(result.getDueDate().value()).isEqualTo(expectedDueDate);
-            
+
             verify(todoRepository, times(1)).save(todoCaptor.capture());
             Todo captured = todoCaptor.getValue();
             assertThat(captured.getTitle()).isEqualTo(expectedTitle);
@@ -157,7 +152,7 @@ class TodoServiceTest {
         void updateTodo_正常系() {
             // arrange
             String publicId = VALID_UUID_1;
-            Todo existingTodo = createSampleTodo(1, publicId, 1); 
+            Todo existingTodo = createSampleTodo(1, publicId, 1);
 
             String updatedTitle = "Updated Title";
             String updatedDetail = "Updated Detail";
@@ -166,12 +161,12 @@ class TodoServiceTest {
             ArgumentCaptor<Todo> todoCaptor = ArgumentCaptor.forClass(Todo.class);
 
             when(todoRepository.findByPublicId(any(PublicId.class)))
-                .thenReturn(Optional.of(existingTodo));
-            when(todoRepository.save(any(Todo.class)))
-                .thenAnswer(inv -> inv.getArgument(0));
-            
+                    .thenReturn(Optional.of(existingTodo));
+            when(todoRepository.save(any(Todo.class))).thenAnswer(inv -> inv.getArgument(0));
+
             // act
-            Todo result = todoService.updateTodo(publicId, updatedTitle, updatedDetail, updatedDueDate);
+            Todo result =
+                    todoService.updateTodo(publicId, updatedTitle, updatedDetail, updatedDueDate);
 
             // assert
             assertThat(result).isNotNull();
@@ -195,11 +190,16 @@ class TodoServiceTest {
         void updateTodo_存在しないTodo() {
             // arrange
             String publicId = NON_EXISTENT_UUID;
-            when(todoRepository.findByPublicId(any(PublicId.class)))
-                    .thenReturn(Optional.empty());
+            when(todoRepository.findByPublicId(any(PublicId.class))).thenReturn(Optional.empty());
 
             // act & assert
-            assertThatThrownBy(() -> todoService.updateTodo(publicId, "Title", "Detail", LocalDate.now().plusDays(1)))
+            assertThatThrownBy(
+                            () ->
+                                    todoService.updateTodo(
+                                            publicId,
+                                            "Title",
+                                            "Detail",
+                                            LocalDate.now().plusDays(1)))
                     .isInstanceOf(TodoNotFoundException.class)
                     .hasMessageContaining("Todoが見つかりません");
 
@@ -214,12 +214,15 @@ class TodoServiceTest {
             // arrange
             String publicId = VALID_UUID_1;
             Todo existingTodo = createSampleTodo(1, publicId, 1);
-            
+
             when(todoRepository.findByPublicId(any(PublicId.class)))
                     .thenReturn(Optional.of(existingTodo));
 
             // act & assert
-            assertThatThrownBy(() -> todoService.updateTodo(publicId, "", "Detail", LocalDate.now().plusDays(1)))
+            assertThatThrownBy(
+                            () ->
+                                    todoService.updateTodo(
+                                            publicId, "", "Detail", LocalDate.now().plusDays(1)))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("タイトルは必須です");
 
@@ -239,15 +242,14 @@ class TodoServiceTest {
         void completeTodo_正常系() {
             // arrange
             String publicId = VALID_UUID_1;
-            Todo existingTodo = createSampleTodo(1, publicId, 1); 
+            Todo existingTodo = createSampleTodo(1, publicId, 1);
 
             ArgumentCaptor<Todo> todoCaptor = ArgumentCaptor.forClass(Todo.class);
 
             when(todoRepository.findByPublicId(any(PublicId.class)))
-                .thenReturn(Optional.of(existingTodo));
-            when(todoRepository.save(any(Todo.class)))
-                .thenAnswer(inv -> inv.getArgument(0));
-            
+                    .thenReturn(Optional.of(existingTodo));
+            when(todoRepository.save(any(Todo.class))).thenAnswer(inv -> inv.getArgument(0));
+
             // act
             Todo result = todoService.completeTodo(publicId);
 
@@ -277,8 +279,7 @@ class TodoServiceTest {
         void completeTodo_存在しないTodo() {
             // arrange
             String publicId = NON_EXISTENT_UUID;
-            when(todoRepository.findByPublicId(any(PublicId.class)))
-                    .thenReturn(Optional.empty());
+            when(todoRepository.findByPublicId(any(PublicId.class))).thenReturn(Optional.empty());
 
             // act & assert
             assertThatThrownBy(() -> todoService.completeTodo(publicId))
@@ -294,21 +295,21 @@ class TodoServiceTest {
         void completeTodo_重複完了() {
             // arrange
             String publicId = VALID_UUID_1;
-            Todo completedTodo = new Todo(
-                new InternalId(1),
-                new PublicId(publicId),
-                new VersionNumber(2),
-                "Sample Title",
-                "Sample Detail",
-                true,
-                false,
-                new DueDate(LocalDate.now().plusDays(1)),
-                LocalDateTime.now(),
-                LocalDateTime.now()
-            );
+            Todo completedTodo =
+                    new Todo(
+                            new InternalId(1),
+                            new PublicId(publicId),
+                            new VersionNumber(2),
+                            "Sample Title",
+                            "Sample Detail",
+                            true,
+                            false,
+                            new DueDate(LocalDate.now().plusDays(1)),
+                            LocalDateTime.now(),
+                            LocalDateTime.now());
 
             when(todoRepository.findByPublicId(any(PublicId.class)))
-                .thenReturn(Optional.of(completedTodo));
+                    .thenReturn(Optional.of(completedTodo));
 
             // act
             Todo result = todoService.completeTodo(publicId);
@@ -334,15 +335,14 @@ class TodoServiceTest {
         void deleteTodo_正常系() {
             // arrange
             String publicId = VALID_UUID_1;
-            Todo existingTodo = createSampleTodo(1, publicId, 1); 
+            Todo existingTodo = createSampleTodo(1, publicId, 1);
 
             ArgumentCaptor<Todo> todoCaptor = ArgumentCaptor.forClass(Todo.class);
 
             when(todoRepository.findByPublicId(any(PublicId.class)))
-                .thenReturn(Optional.of(existingTodo));
-            when(todoRepository.save(any(Todo.class)))
-                .thenAnswer(inv -> inv.getArgument(0));
-            
+                    .thenReturn(Optional.of(existingTodo));
+            when(todoRepository.save(any(Todo.class))).thenAnswer(inv -> inv.getArgument(0));
+
             // act
             Todo result = todoService.deleteTodo(publicId);
 
@@ -372,8 +372,7 @@ class TodoServiceTest {
         void deleteTodo_存在しないTodo() {
             // arrange
             String publicId = NON_EXISTENT_UUID;
-            when(todoRepository.findByPublicId(any(PublicId.class)))
-                    .thenReturn(Optional.empty());
+            when(todoRepository.findByPublicId(any(PublicId.class))).thenReturn(Optional.empty());
 
             // act & assert
             assertThatThrownBy(() -> todoService.deleteTodo(publicId))
@@ -398,7 +397,7 @@ class TodoServiceTest {
             // arrange
             String publicId = VALID_UUID_1;
             Todo existingTodo = createSampleTodo(1, publicId, 1);
-            
+
             when(todoRepository.findByPublicId(any(PublicId.class)))
                     .thenReturn(Optional.of(existingTodo));
 
@@ -416,8 +415,7 @@ class TodoServiceTest {
         void getTodo_存在しないTodo() {
             // arrange
             String publicId = NON_EXISTENT_UUID;
-            when(todoRepository.findByPublicId(any(PublicId.class)))
-                    .thenReturn(Optional.empty());
+            when(todoRepository.findByPublicId(any(PublicId.class))).thenReturn(Optional.empty());
 
             // act & assert
             assertThatThrownBy(() -> todoService.getTodo(publicId))
@@ -434,7 +432,7 @@ class TodoServiceTest {
             String publicId = VALID_UUID_1;
             Todo deletedTodo = createSampleTodo(1, publicId, 1);
             deletedTodo.delete();
-            
+
             when(todoRepository.findByPublicId(any(PublicId.class)))
                     .thenReturn(Optional.of(deletedTodo));
 
@@ -471,7 +469,8 @@ class TodoServiceTest {
 
             // assert
             assertThat(result).hasSize(2);
-            assertThat(result).extracting(t -> t.getPublicId().value())
+            assertThat(result)
+                    .extracting(t -> t.getPublicId().value())
                     .containsExactlyInAnyOrder(VALID_UUID_1, VALID_UUID_2);
             verify(todoRepository, times(1)).findAll();
         }
@@ -485,8 +484,7 @@ class TodoServiceTest {
             Todo deletedTodo2 = createSampleTodo(2, VALID_UUID_2, 2);
             deletedTodo2.delete();
 
-            when(todoRepository.findAll())
-                    .thenReturn(List.of(deletedTodo1, deletedTodo2));
+            when(todoRepository.findAll()).thenReturn(List.of(deletedTodo1, deletedTodo2));
 
             // act
             List<Todo> result = todoService.listActiveTodos();

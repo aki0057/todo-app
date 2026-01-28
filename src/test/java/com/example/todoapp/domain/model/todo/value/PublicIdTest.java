@@ -2,6 +2,7 @@ package com.example.todoapp.domain.model.todo.value;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -30,8 +31,7 @@ class PublicIdTest {
         @DisplayName("異常系: 空文字では生成できない")
         void constructor_空文字では生成できない() {
             // act & assert
-            assertThatThrownBy(() -> new PublicId(""))
-                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> new PublicId("")).isInstanceOf(IllegalArgumentException.class);
         }
 
         @Test

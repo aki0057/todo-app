@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", function () {
   const buttons = document.querySelectorAll('[data-toggle="detail"]');
   buttons.forEach((btn) => {
     const targetId = btn.getAttribute("data-target");

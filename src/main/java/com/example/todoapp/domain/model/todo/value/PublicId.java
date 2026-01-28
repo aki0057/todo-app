@@ -1,15 +1,12 @@
 package com.example.todoapp.domain.model.todo.value;
 
-import java.util.UUID;
-
 import jakarta.persistence.Embeddable;
+import java.util.UUID;
 
 /**
  * Todo の公開IDを表す ValueObject。
- * <p>
- * UUID 形式の文字列で、外部に公開される識別子。
- * ドメイン外部のシステムとの連携に使用される。
- * </p>
+ *
+ * <p>UUID 形式の文字列で、外部に公開される識別子。 ドメイン外部のシステムとの連携に使用される。
  */
 @Embeddable
 public record PublicId(String value) {
@@ -26,9 +23,8 @@ public record PublicId(String value) {
 
     /**
      * 新しい公開IDを生成する。
-     * <p>
-     * 新規 Todo 作成時に自動生成される UUID 形式の ID。
-     * </p>
+     *
+     * <p>新規 Todo 作成時に自動生成される UUID 形式の ID。
      *
      * @return 生成された公開ID
      */

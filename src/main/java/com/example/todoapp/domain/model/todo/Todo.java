@@ -1,29 +1,27 @@
 package com.example.todoapp.domain.model.todo;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import com.example.todoapp.domain.model.todo.value.DueDate;
 import com.example.todoapp.domain.model.todo.value.InternalId;
 import com.example.todoapp.domain.model.todo.value.PublicId;
 import com.example.todoapp.domain.model.todo.value.VersionNumber;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 
 /**
  * Todo を表すドメインエンティティ。
- * <p>
- * 以下の情報を保持する：
+ *
+ * <p>以下の情報を保持する：
+ *
  * <ul>
- *     <li>内部ID（DB 採番）</li>
- *     <li>公開ID（UUID）</li>
- *     <li>タイトル・詳細</li>
- *     <li>期限日</li>
- *     <li>完了状態・削除状態</li>
- *     <li>版数</li>
- *     <li>作成日時・更新日時</li>
+ *   <li>内部ID（DB 採番）
+ *   <li>公開ID（UUID）
+ *   <li>タイトル・詳細
+ *   <li>期限日
+ *   <li>完了状態・削除状態
+ *   <li>版数
+ *   <li>作成日時・更新日時
  * </ul>
- * </p>
  */
 @Getter
 public class Todo {
@@ -66,9 +64,7 @@ public class Todo {
     // コンストラクタ
     // ========================================================================
 
-    /**
-     * 永続化層から復元するためのコンストラクタ。
-     */
+    /** 永続化層から復元するためのコンストラクタ。 */
     public Todo(
             InternalId internalId,
             PublicId publicId,
@@ -79,8 +75,7 @@ public class Todo {
             boolean deleted,
             DueDate dueDate,
             LocalDateTime createdAt,
-            LocalDateTime updatedAt
-    ) {
+            LocalDateTime updatedAt) {
         this.internalId = internalId;
         this.publicId = publicId;
         this.versionNumber = versionNumber;
@@ -99,13 +94,11 @@ public class Todo {
 
     /**
      * Todo を新規作成する。
-     * <p>
-     * タイトルと期限日は必須。期限日は本日以降である必要がある。
-     * タイトルは100文字以内、詳細は1000文字以内である必要がある。
-     * </p>
      *
-     * @param title   タイトル（必須、100文字以内）
-     * @param detail  詳細（任意、1000文字以内）
+     * <p>タイトルと期限日は必須。期限日は本日以降である必要がある。 タイトルは100文字以内、詳細は1000文字以内である必要がある。
+     *
+     * @param title タイトル（必須、100文字以内）
+     * @param detail 詳細（任意、1000文字以内）
      * @param dueDate 期限日（必須、本日以降）
      * @return 新しく生成された Todo
      * @throws IllegalArgumentException タイトルまたは詳細が不正な場合
@@ -125,17 +118,17 @@ public class Todo {
         LocalDateTime now = LocalDateTime.now();
 
         return new Todo(
-            null,            // internalId（DB が採番）
-            PublicId.generate(),        // publicId（UUID）
-            VersionNumber.initial(),    // versionNumber = 1
-            title,
-            detail,
-            false,            // completed
-            false,              // deleted
-            new DueDate(dueDate),
-            now,                        // createdAt
-            now                         // updatedAt
-        );
+                null, // internalId（DB が採番）
+                PublicId.generate(), // publicId（UUID）
+                VersionNumber.initial(), // versionNumber = 1
+                title,
+                detail,
+                false, // completed
+                false, // deleted
+                new DueDate(dueDate),
+                now, // createdAt
+                now // updatedAt
+                );
     }
 
     // ========================================================================
@@ -144,14 +137,11 @@ public class Todo {
 
     /**
      * Todo の内容を更新する。
-     * <p>
-     * タイトルと期限日は必須。期限日は本日以降である必要がある。
-     * タイトルは100文字以内、詳細は1000文字以内である必要がある。
-     * 更新時に版数と更新日時を更新する。
-     * </p>
      *
-     * @param title   新しいタイトル（必須、100文字以内）
-     * @param detail  新しい詳細（任意、1000文字以内）
+     * <p>タイトルと期限日は必須。期限日は本日以降である必要がある。 タイトルは100文字以内、詳細は1000文字以内である必要がある。 更新時に版数と更新日時を更新する。
+     *
+     * @param title 新しいタイトル（必須、100文字以内）
+     * @param detail 新しい詳細（任意、1000文字以内）
      * @param dueDate 新しい期限日（必須、本日以降）
      * @throws IllegalArgumentException タイトルまたは詳細が不正な場合
      */
@@ -177,10 +167,8 @@ public class Todo {
 
     /**
      * Todo を完了状態にする。
-     * <p>
-     * すでに完了済みの場合は何も変更しない。
-     * 完了状態へ遷移した場合のみ、版数と更新日時を更新する。
-     * </p>
+     *
+     * <p>すでに完了済みの場合は何も変更しない。 完了状態へ遷移した場合のみ、版数と更新日時を更新する。
      */
     public void complete() {
 
@@ -195,10 +183,8 @@ public class Todo {
 
     /**
      * Todo を削除状態にする（論理削除）。
-     * <p>
-     * すでに削除済みの場合は何も変更しない。
-     * 削除状態へ遷移した場合のみ、版数と更新日時を更新する。
-     * </p>
+     *
+     * <p>すでに削除済みの場合は何も変更しない。 削除状態へ遷移した場合のみ、版数と更新日時を更新する。
      */
     public void delete() {
 
