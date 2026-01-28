@@ -4,6 +4,12 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Embeddable;
 
+/**
+ * Todo の期限日を表す ValueObject。
+ * <p>
+ * 本日以降の日付のみ有効。過去日付は許可されない。
+ * </p>
+ */
 @Embeddable
 public record DueDate(LocalDate value) {
 

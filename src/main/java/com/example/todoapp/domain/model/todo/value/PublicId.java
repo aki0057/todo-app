@@ -4,6 +4,13 @@ import java.util.UUID;
 
 import jakarta.persistence.Embeddable;
 
+/**
+ * Todo の公開ID を表す ValueObject。
+ * <p>
+ * UUID 形式の文字列で、外部に公開される識別子。
+ * ドメイン外部のシステムとの連携に使用される。
+ * </p>
+ */
 @Embeddable
 public record PublicId(String value) {
     public PublicId {
@@ -17,6 +24,14 @@ public record PublicId(String value) {
         }
     }
 
+    /**
+     * 新しい公開ID を生成する。
+     * <p>
+     * 新規 Todo 作成時に自動生成される UUID 形式の ID。
+     * </p>
+     *
+     * @return 生成された公開ID
+     */
     public static PublicId generate() {
         return new PublicId(UUID.randomUUID().toString());
     }

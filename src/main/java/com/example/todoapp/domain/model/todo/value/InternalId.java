@@ -2,6 +2,12 @@ package com.example.todoapp.domain.model.todo.value;
 
 import jakarta.persistence.Embeddable;
 
+/**
+ * Todo の内部ID を表す ValueObject。
+ * <p>
+ * データベースが採番する自動採番ID。1以上の正の整数のみ有効。
+ * </p>
+ */
 @Embeddable
 public record InternalId(Integer value) {
     public InternalId {
