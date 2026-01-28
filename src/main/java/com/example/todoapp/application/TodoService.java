@@ -86,7 +86,7 @@ public class TodoService {
 	@Transactional
 	public Todo updateTodo(String publicId, String title, String detail, LocalDate dueDate) {
 		Todo todo = todoRepository.findByPublicId(new PublicId(publicId))
-				.orElseThrow(() -> new TodoNotFoundException("Todo not found: " + publicId));
+				.orElseThrow(() -> new TodoNotFoundException());
 
 		int beforeVersion = todo.getVersionNumber().value();
 		todo.update(title, detail, dueDate);
@@ -116,7 +116,7 @@ public class TodoService {
 	@Transactional
 	public Todo completeTodo(String publicId) {
 		Todo todo = todoRepository.findByPublicId(new PublicId(publicId))
-				.orElseThrow(() -> new TodoNotFoundException("Todo not found: " + publicId));
+				.orElseThrow(() -> new TodoNotFoundException());
 
 		// すでに完了状態の場合はスキップ
 		if (todo.isCompleted()) {
@@ -150,7 +150,7 @@ public class TodoService {
 	@Transactional
 	public Todo deleteTodo(String publicId) {
 		Todo todo = todoRepository.findByPublicId(new PublicId(publicId))
-				.orElseThrow(() -> new TodoNotFoundException("Todo not found: " + publicId));
+				.orElseThrow(() -> new TodoNotFoundException());
 
 		int beforeVersion = todo.getVersionNumber().value();
 		todo.delete();
@@ -178,11 +178,11 @@ public class TodoService {
 	@Transactional(readOnly = true)
 	public Todo getTodo(String publicId) {
 		Todo todo = todoRepository.findByPublicId(new PublicId(publicId))
-				.orElseThrow(() -> new TodoNotFoundException("Todo not found: " + publicId));
+				.orElseThrow(() -> new TodoNotFoundException());
 		
 		// 削除済みTodoは存在しないものとして扱う
 		if (todo.isDeleted()) {
-			throw new TodoNotFoundException("Todo not found: " + publicId);
+			throw new TodoNotFoundException();
 		}
 		
 		return todo;

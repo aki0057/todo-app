@@ -201,7 +201,7 @@ class TodoServiceTest {
             // act & assert
             assertThatThrownBy(() -> todoService.updateTodo(publicId, "Title", "Detail", LocalDate.now().plusDays(1)))
                     .isInstanceOf(TodoNotFoundException.class)
-                    .hasMessageContaining("Todo not found");
+                    .hasMessageContaining("Todoが見つかりません");
 
             verify(todoRepository, times(1)).findByPublicId(any(PublicId.class));
             verify(todoRepository, never()).save(any(Todo.class));
@@ -283,7 +283,7 @@ class TodoServiceTest {
             // act & assert
             assertThatThrownBy(() -> todoService.completeTodo(publicId))
                     .isInstanceOf(TodoNotFoundException.class)
-                    .hasMessageContaining("Todo not found");
+                    .hasMessageContaining("Todoが見つかりません");
 
             verify(todoRepository, times(1)).findByPublicId(any(PublicId.class));
             verify(todoRepository, never()).save(any(Todo.class));
@@ -378,7 +378,7 @@ class TodoServiceTest {
             // act & assert
             assertThatThrownBy(() -> todoService.deleteTodo(publicId))
                     .isInstanceOf(TodoNotFoundException.class)
-                    .hasMessageContaining("Todo not found");
+                    .hasMessageContaining("Todoが見つかりません");
 
             verify(todoRepository, times(1)).findByPublicId(any(PublicId.class));
             verify(todoRepository, never()).save(any(Todo.class));
@@ -422,7 +422,7 @@ class TodoServiceTest {
             // act & assert
             assertThatThrownBy(() -> todoService.getTodo(publicId))
                     .isInstanceOf(TodoNotFoundException.class)
-                    .hasMessageContaining("Todo not found");
+                    .hasMessageContaining("Todoが見つかりません");
 
             verify(todoRepository, times(1)).findByPublicId(any(PublicId.class));
         }
@@ -441,7 +441,7 @@ class TodoServiceTest {
             // act & assert
             assertThatThrownBy(() -> todoService.getTodo(publicId))
                     .isInstanceOf(TodoNotFoundException.class)
-                    .hasMessageContaining("Todo not found");
+                    .hasMessageContaining("Todoが見つかりません");
 
             verify(todoRepository, times(1)).findByPublicId(any(PublicId.class));
         }
