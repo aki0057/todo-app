@@ -35,7 +35,7 @@ public class Todo {
     /** DB が採番する内部ID（永続化前は null） */
     private final InternalId internalId;
 
-    /** 外部公開用の UUID */
+    /** 公開ID（UUID形式） */
     private final PublicId publicId;
 
     /** 版数 */

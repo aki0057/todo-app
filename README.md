@@ -30,18 +30,18 @@ src/main/java/com/example/todoapp/
 
 ### todo テーブル（集約ルート）
 
-| カラム名       | 型        | 説明                         |
-| -------------- | --------- | ---------------------------- |
-| internal_id    | int       | 主キー（DB による自動採番）  |
-| version_number | int       | 最新の履歴番号               |
-| public_id      | varchar   | 外部公開ID（アプリ側で生成） |
-| title          | varchar   | タイトル                     |
-| detail         | text      | 詳細                         |
-| due_date       | date      | 期限日                       |
-| completed_flag | boolean   | 完了フラグ                   |
-| deleted_flag   | boolean   | 削除フラグ                   |
-| created_at     | timestamp | 作成日時                     |
-| updated_at     | timestamp | 更新日時                     |
+| カラム名       | 型        | 説明                                |
+| -------------- | --------- | ----------------------------------- |
+| internal_id    | int       | 内部ID（主キー、DB による自動採番） |
+| version_number | int       | 最新の履歴番号                      |
+| public_id      | varchar   | 外部公開ID（アプリ側で生成）        |
+| title          | varchar   | タイトル                            |
+| detail         | text      | 詳細                                |
+| due_date       | date      | 期限日                              |
+| completed_flag | boolean   | 完了フラグ                          |
+| deleted_flag   | boolean   | 削除フラグ                          |
+| created_at     | timestamp | 作成日時                            |
+| updated_at     | timestamp | 更新日時                            |
 
 ### todo_history テーブル（履歴テーブル）
 

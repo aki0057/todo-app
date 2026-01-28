@@ -18,7 +18,7 @@ import com.example.todoapp.domain.model.todo.value.PublicId;
 public interface TodoDomainRepository {
 
     /**
-     * 内部ID で Todo を検索する。
+     * 内部IDで Todo を検索する。
      *
      * @param id 検索対象の内部ID
      * @return 見つかった場合は Todo を含む Optional、見つからない場合は空の Optional
@@ -26,7 +26,7 @@ public interface TodoDomainRepository {
     Optional<Todo> findByInternalId(InternalId id);
 
     /**
-     * 公開ID で Todo を検索する。
+     * 公開IDで Todo を検索する。
      *
      * @param id 検索対象の公開ID
      * @return 見つかった場合は Todo を含む Optional、見つからない場合は空の Optional

@@ -36,7 +36,7 @@ public class TodoRepositoryImpl implements TodoDomainRepository {
     }
 
     /**
-     * 内部ID で Todo を検索する。
+     * 内部IDで Todo を検索する。
      *
      * @param id 検索対象の内部ID
      * @return 見つかった場合は Todo を含む Optional、見つからない場合は空の Optional
@@ -48,7 +48,7 @@ public class TodoRepositoryImpl implements TodoDomainRepository {
     }
 
     /**
-     * 公開ID で Todo を検索する。
+     * 公開IDで Todo を検索する。
      *
      * @param id 検索対象の公開ID
      * @return 見つかった場合は Todo を含む Optional、見つからない場合は空の Optional
@@ -79,7 +79,7 @@ public class TodoRepositoryImpl implements TodoDomainRepository {
      * </p>
      *
      * @param todo 永続化対象の Todo
-     * @return 永続化後の Todo（内部ID が設定済み）
+     * @return 永続化後の Todo（内部IDが設定済み）
      */
     @Override
     public Todo save(Todo todo) {

@@ -12,20 +12,7 @@
 	<artifactId>todo-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>todo-app</name>
-	<description>Demo project for Spring Boot</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+	<description>DDD Architecture Todo Application with Spring Boot</description>
 	<properties>
 		<java.version>23</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

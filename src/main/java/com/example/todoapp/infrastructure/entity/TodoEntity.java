@@ -38,7 +38,7 @@ public class TodoEntity {
     @Column(name = "version_number")
     private Integer versionNumber;
 
-    /** 外部公開用の UUID */
+    /** 公開ID（UUID形式） */
     @Column(name = "public_id")
     private String publicId;
 
