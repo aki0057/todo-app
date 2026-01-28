@@ -4,38 +4,49 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("DueDate のテスト")
 class DueDateTest {
 
-    @Test
-    void 今日以降の日付なら生成できる() {
-        // arrange
-        LocalDate today = LocalDate.now();
+    @Nested
+    @DisplayName("生成 のテスト")
+    class ConstructorTest {
 
-        // act
-        DueDate dueDate = new DueDate(today);
+        @Test
+        @DisplayName("正常系: 今日以降の日付なら生成できる")
+        void constructor_今日以降の日付なら生成できる() {
+            // arrange
+            LocalDate today = LocalDate.now();
 
-        // assert
-        assertThat(dueDate.value()).isEqualTo(today);
-    }
+            // act
+            DueDate dueDate = new DueDate(today);
 
-    @Test
-    void nullなら例外が発生する() {
-        // act & assert
-        assertThatThrownBy(() -> new DueDate(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("期限日は必須です");
-    }
+            // assert
+            assertThat(dueDate.value()).isEqualTo(today);
+        }
 
-    @Test
-    void 過去日なら例外が発生する() {
-        // arrange
-        LocalDate yesterday = LocalDate.now().minusDays(1);
+        @Test
+        @DisplayName("異常系: nullなら例外が発生する")
+        void constructor_nullなら例外が発生する() {
+            // act & assert
+            assertThatThrownBy(() -> new DueDate(null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("期限日は必須です");
+        }
 
-        // act & assert
-        assertThatThrownBy(() -> new DueDate(yesterday))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("期限日は本日以降である必要があります");
+        @Test
+        @DisplayName("異常系: 過去日なら例外が発生する")
+        void constructor_過去日なら例外が発生する() {
+            // arrange
+            LocalDate yesterday = LocalDate.now().minusDays(1);
+
+            // act & assert
+            assertThatThrownBy(() -> new DueDate(yesterday))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("期限日は本日以降である必要があります");
+        }
     }
 }
