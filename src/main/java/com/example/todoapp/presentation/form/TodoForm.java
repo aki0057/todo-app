@@ -8,12 +8,14 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Todo の作成・編集画面用のフォームクラス。
  */
-@Data
+@Getter
+@Setter
 public class TodoForm {
     
     /**
