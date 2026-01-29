@@ -56,16 +56,6 @@ public class TodoRepositoryImpl implements TodoDomainRepository {
     }
 
     /**
-     * すべての Todo を取得する。
-     *
-     * @return Todo のリスト
-     */
-    @Override
-    public List<Todo> findAll() {
-        return jpa.findAll().stream().map(TodoMapper::toDomain).toList();
-    }
-
-    /**
      * 削除されておらず、期限日が本日以降のTodoを取得する。
      *
      * <p>期限日の昇順、その後作成日時の昇順でソートされる。

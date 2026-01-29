@@ -32,13 +32,6 @@ public interface TodoDomainRepository {
     Optional<Todo> findByPublicId(PublicId id);
 
     /**
-     * すべての Todo を取得する。
-     *
-     * @return Todo のリスト
-     */
-    List<Todo> findAll();
-
-    /**
      * 削除されておらず、期限日が本日以降のTodoを取得する。
      *
      * <p>期限日の昇順、その後作成日時の昇順でソートされる。
