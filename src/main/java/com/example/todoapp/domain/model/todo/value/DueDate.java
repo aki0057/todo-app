@@ -1,12 +1,14 @@
 package com.example.todoapp.domain.model.todo.value;
 
-import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
+
+import jakarta.persistence.Embeddable;
 
 /**
  * Todo の期限日を表す ValueObject。
  *
- * <p>本日以降の日付のみ有効。過去日付は許可されない。
+ * <p>日付の構造的な妥当性のみを保証する。
+ * 期限日が本日以降であるかの検証は、作成・更新時にエンティティ側で行う。
  */
 @Embeddable
 public record DueDate(LocalDate value) {
@@ -14,9 +16,6 @@ public record DueDate(LocalDate value) {
     public DueDate {
         if (value == null) {
             throw new IllegalArgumentException("期限日は必須です");
-        }
-        if (value.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("期限日は本日以降である必要があります");
         }
     }
 }

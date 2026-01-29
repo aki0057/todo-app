@@ -1,12 +1,25 @@
 package com.example.todoapp.application;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.todoapp.domain.exception.TodoNotFoundException;
 import com.example.todoapp.domain.model.todo.Todo;
@@ -17,18 +30,6 @@ import com.example.todoapp.domain.model.todo.value.VersionNumber;
 import com.example.todoapp.domain.repository.TodoDomainRepository;
 import com.example.todoapp.infrastructure.entity.TodoHistoryEntity;
 import com.example.todoapp.infrastructure.repository.jpa.TodoHistoryJpaRepository;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("TodoService のテスト")
@@ -453,45 +454,34 @@ class TodoServiceTest {
     class ListActiveTodosTest {
 
         @Test
-        @DisplayName("正常系: 削除済みを除外したTodo一覧を取得できる")
-        void listActiveTodos_削除済みを除外() {
+        @DisplayName("正常系: 有効なTodo一覧を取得できる")
+        void listActiveTodos_有効なTodo一覧を取得() {
             // arrange
-            Todo activeTodo1 = createSampleTodo(1, VALID_UUID_1, 1);
-            Todo activeTodo2 = createSampleTodo(2, VALID_UUID_2, 1);
-            Todo deletedTodo = createSampleTodo(3, VALID_UUID_3, 2);
-            deletedTodo.delete();
+            Todo validTodo = createSampleTodo(1, VALID_UUID_1, 1);
 
-            when(todoRepository.findAll())
-                    .thenReturn(List.of(activeTodo1, activeTodo2, deletedTodo));
+            when(todoRepository.findAllActiveAndValid()).thenReturn(List.of(validTodo));
 
             // act
             List<Todo> result = todoService.listActiveTodos();
 
             // assert
-            assertThat(result).hasSize(2);
-            assertThat(result)
-                    .extracting(t -> t.getPublicId().value())
-                    .containsExactlyInAnyOrder(VALID_UUID_1, VALID_UUID_2);
-            verify(todoRepository, times(1)).findAll();
+            assertThat(result).hasSize(1);
+            assertThat(result.get(0).getPublicId().value()).isEqualTo(VALID_UUID_1);
+            verify(todoRepository, times(1)).findAllActiveAndValid();
         }
 
         @Test
-        @DisplayName("正常系: 全て削除済みの場合は空リストを返す")
-        void listActiveTodos_全て削除済み() {
+        @DisplayName("正常系: 有効なTodoが存在しない場合は空リストを返す")
+        void listActiveTodos_有効なTodoなし() {
             // arrange
-            Todo deletedTodo1 = createSampleTodo(1, VALID_UUID_1, 2);
-            deletedTodo1.delete();
-            Todo deletedTodo2 = createSampleTodo(2, VALID_UUID_2, 2);
-            deletedTodo2.delete();
-
-            when(todoRepository.findAll()).thenReturn(List.of(deletedTodo1, deletedTodo2));
+            when(todoRepository.findAllActiveAndValid()).thenReturn(List.of());
 
             // act
             List<Todo> result = todoService.listActiveTodos();
 
             // assert
             assertThat(result).isEmpty();
-            verify(todoRepository, times(1)).findAll();
+            verify(todoRepository, times(1)).findAllActiveAndValid();
         }
     }
 }

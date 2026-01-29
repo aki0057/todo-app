@@ -1,16 +1,17 @@
 package com.example.todoapp.domain.model.todo;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import com.example.todoapp.domain.model.todo.value.DueDate;
 import com.example.todoapp.domain.model.todo.value.InternalId;
 import com.example.todoapp.domain.model.todo.value.PublicId;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 
 @DisplayName("Todo のテスト")
 class TodoTest {

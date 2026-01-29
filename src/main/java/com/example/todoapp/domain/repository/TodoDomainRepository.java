@@ -1,10 +1,11 @@
 package com.example.todoapp.domain.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.example.todoapp.domain.model.todo.Todo;
 import com.example.todoapp.domain.model.todo.value.InternalId;
 import com.example.todoapp.domain.model.todo.value.PublicId;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Todo の永続化を行うドメイン repository インターフェース。
@@ -36,6 +37,15 @@ public interface TodoDomainRepository {
      * @return Todo のリスト
      */
     List<Todo> findAll();
+
+    /**
+     * 削除されておらず、期限日が本日以降のTodoを取得する。
+     *
+     * <p>期限日の昇順、その後作成日時の昇順でソートされる。
+     *
+     * @return 有効なTodoのリスト（ソート済み）
+     */
+    List<Todo> findAllActiveAndValid();
 
     /**
      * Todo を永続化する。

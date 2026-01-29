@@ -1,5 +1,10 @@
 package com.example.todoapp.infrastructure.repository.impl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Repository;
+
 import com.example.todoapp.domain.model.todo.Todo;
 import com.example.todoapp.domain.model.todo.value.InternalId;
 import com.example.todoapp.domain.model.todo.value.PublicId;
@@ -7,9 +12,6 @@ import com.example.todoapp.domain.repository.TodoDomainRepository;
 import com.example.todoapp.infrastructure.entity.TodoEntity;
 import com.example.todoapp.infrastructure.mapper.TodoMapper;
 import com.example.todoapp.infrastructure.repository.jpa.TodoJpaRepository;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.stereotype.Repository;
 
 /**
  * ドメイン repository インターフェースの実装クラス。
@@ -61,6 +63,18 @@ public class TodoRepositoryImpl implements TodoDomainRepository {
     @Override
     public List<Todo> findAll() {
         return jpa.findAll().stream().map(TodoMapper::toDomain).toList();
+    }
+
+    /**
+     * 削除されておらず、期限日が本日以降のTodoを取得する。
+     *
+     * <p>期限日の昇順、その後作成日時の昇順でソートされる。
+     *
+     * @return 有効なTodoのリスト（ソート済み）
+     */
+    @Override
+    public List<Todo> findAllActiveAndValid() {
+        return jpa.findAllActiveAndValid().stream().map(TodoMapper::toDomain).toList();
     }
 
     /**

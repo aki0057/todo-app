@@ -1,17 +1,17 @@
 package com.example.todoapp.application;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.todoapp.domain.exception.TodoNotFoundException;
 import com.example.todoapp.domain.model.todo.Todo;
 import com.example.todoapp.domain.model.todo.value.PublicId;
 import com.example.todoapp.domain.repository.TodoDomainRepository;
 import com.example.todoapp.infrastructure.entity.TodoHistoryEntity;
 import com.example.todoapp.infrastructure.repository.jpa.TodoHistoryJpaRepository;
-import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Todo のユースケースを実装するアプリケーションサービス。
@@ -184,7 +184,7 @@ public class TodoService {
     }
 
     /**
-     * 論理削除されていない活動中の Todo をすべて取得する。
+     * 論理削除されておらず、期限日が本日以降の活動中の Todo を取得する。
      *
      * <p>期限日の昇順、その後作成日時の昇順でソートされた状態で返される。
      *
@@ -192,12 +192,7 @@ public class TodoService {
      */
     @Transactional(readOnly = true)
     public List<Todo> listActiveTodos() {
-        return todoRepository.findAll().stream()
-                .filter(t -> !t.isDeleted())
-                .sorted(
-                        Comparator.comparing((Todo todo) -> todo.getDueDate().value())
-                                .thenComparing(Todo::getCreatedAt))
-                .collect(Collectors.toList());
+        return todoRepository.findAllActiveAndValid();
     }
 
     // ========================================================================

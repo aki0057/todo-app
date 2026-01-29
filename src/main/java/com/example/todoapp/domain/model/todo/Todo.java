@@ -1,11 +1,13 @@
 package com.example.todoapp.domain.model.todo;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import com.example.todoapp.domain.model.todo.value.DueDate;
 import com.example.todoapp.domain.model.todo.value.InternalId;
 import com.example.todoapp.domain.model.todo.value.PublicId;
 import com.example.todoapp.domain.model.todo.value.VersionNumber;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import lombok.Getter;
 
 /**
@@ -114,6 +116,12 @@ public class Todo {
         if (detail != null && detail.length() > 1000) {
             throw new IllegalArgumentException("詳細は1000文字以内である必要があります");
         }
+        if (dueDate == null) {
+            throw new IllegalArgumentException("期限日は必須です");
+        }
+        if (dueDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("期限日は本日以降である必要があります");
+        }
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -155,6 +163,12 @@ public class Todo {
         }
         if (detail != null && detail.length() > 1000) {
             throw new IllegalArgumentException("詳細は1000文字以内である必要があります");
+        }
+        if (dueDate == null) {
+            throw new IllegalArgumentException("期限日は必須です");
+        }
+        if (dueDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("期限日は本日以降である必要があります");
         }
 
         this.title = title;
